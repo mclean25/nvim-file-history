@@ -4,7 +4,7 @@ A Neovim plugin that tracks file history per project and provides breadcrumb-sty
 
 ## ✨ Features
 
-- **Explicit project-scoped history**: Tracks file visits per project using a `.nvim-breadcrumbs-root` marker file
+- **Explicit project-scoped history**: Tracks file visits per project using a `.nvim-file-history-root` marker file
 - **Persistent across sessions**: History is saved to `.nvim-file-history` in your project root
 - **Telescope integration**: Beautiful UI for browsing history and breadcrumbs
 - **Smart filtering**: Excludes temp files, git directories, and special buffers
@@ -45,12 +45,10 @@ A Neovim plugin that tracks file history per project and provides breadcrumb-sty
     })
     
     -- Keybindings
-    vim.keymap.set('n', '<leader>sH', telescope_integration.file_history_picker, { desc = '[S]earch file [H]istory' })
-    vim.keymap.set('n', '<leader>sb', telescope_integration.breadcrumb_picker, { desc = '[S]earch [B]readcrumbs' })
+    vim.keymap.set('n', '<leader>b', telescope_integration.file_history_picker, { desc = 'File [B]ack history' })
     
     -- Commands
     vim.api.nvim_create_user_command('FileHistory', telescope_integration.file_history_picker, {})
-    vim.api.nvim_create_user_command('FileBreadcrumbs', telescope_integration.breadcrumb_picker, {})
   end
 }
 ```
@@ -71,33 +69,34 @@ use {
 
 ### Initial Setup
 
-**Important**: You must create a `.nvim-breadcrumbs-root` file at your project root for the plugin to work:
+**Important**: You must create a `.nvim-file-history-root` file at your project root for the plugin to work:
+
+This file tells the plugin where the root of your project is so that it knows the context of which history to 
+care about and which files to track.
 
 ```bash
 # Navigate to your project root
 cd /path/to/your/project
 
 # Create the marker file
-touch .nvim-breadcrumbs-root
+touch .nvim-file-history-root
 ```
 
 The plugin will show a warning if this file is not found and will not track history until you create it.
 
 ### Keybindings (Default)
 
-- `<leader>sH` - Open file history picker (all files in project history)
-- `<leader>sb` - Open breadcrumb picker (recent 10 files for quick navigation)
+- `<leader>b` - Open file history picker (all files in project history)
 
 ### Commands
 
 - `:FileHistory` - Open full file history
-- `:FileBreadcrumbs` - Open recent breadcrumbs
 
 ### How it works
 
-1. **Project setup**: Create a `.nvim-breadcrumbs-root` file at your project root
+1. **Project setup**: Create a `.nvim-file-history-root` file at your project root
 2. **Automatic tracking**: Every time you open a file (`BufEnter`/`BufRead`), it's added to history
-3. **Project detection**: Looks for `.nvim-breadcrumbs-root` file to determine project root
+3. **Project detection**: Looks for `.nvim-file-history-root` file to determine project root
 4. **Smart exclusions**: Filters out temporary files, node_modules, .git, oil:// paths, etc.
 5. **Persistent storage**: History saved to `.nvim-file-history` in project root
 
@@ -107,7 +106,7 @@ The plugin will show a warning if this file is not found and will not track hist
 
 ```lua
 {
-  max_history_size = 100,                    -- Maximum files to track per project
+  max_history_size = 20,                     -- Maximum files to track per project
   history_file = '.nvim-file-history',        -- Filename for history storage
   exclude_patterns = {                       -- File patterns to ignore
     '%.git/',
@@ -157,7 +156,7 @@ require('nvim-file-history').setup({
 4. **Cross-session continuity**: History persists between nvim sessions
 5. **Explicit project boundaries**: You control exactly where history is tracked by placing the marker file
 
-## 💡 Why `.nvim-breadcrumbs-root`?
+## 💡 Why `.nvim-file-history-root`?
 
 This approach eliminates common issues with automatic project detection:
 
@@ -190,9 +189,6 @@ local telescope_integration = require('nvim-file-history.telescope')
 
 -- Open file history picker
 telescope_integration.file_history_picker(opts)
-
--- Open breadcrumb picker
-telescope_integration.breadcrumb_picker(opts)
 ```
 
 ## 🎨 Telescope UI
