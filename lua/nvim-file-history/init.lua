@@ -55,6 +55,11 @@ local function should_exclude_file(filepath)
     return true
   end
   
+  -- Exclude the history file itself
+  if state.history_file_path and filepath == state.history_file_path then
+    return true
+  end
+  
   for _, pattern in ipairs(M.config.exclude_patterns) do
     if string.match(filepath, pattern) then
       return true
