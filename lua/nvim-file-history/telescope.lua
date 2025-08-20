@@ -54,9 +54,9 @@ function M.file_history_picker(opts)
   
   if not current_project then
     vim.notify(
-      "File History: No .nvim-file-history-root file found.\n" ..
-      "Please create an empty .nvim-file-history-root file at your project root to enable file history tracking.\n" ..
-      "Example: touch /path/to/your/project/.nvim-file-history-root",
+      "File History: No .nvim-file-history/ directory found.\n" ..
+      "Please create a .nvim-file-history/ directory at your project root to enable file history tracking.\n" ..
+      "Example: mkdir /path/to/your/project/.nvim-file-history",
       vim.log.levels.WARN
     )
     return

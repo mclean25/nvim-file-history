@@ -2,7 +2,7 @@ local M = {}
 
 M.config = {
   max_history_size = 20,
-  history_file = '.nvim-file-history',
+  history_file = 'history.txt',
   exclude_patterns = {
     '%.git/',
     'node_modules/',
@@ -35,7 +35,7 @@ local function get_project_root()
   end
   
   local function find_root(path)
-    if vim.fn.filereadable(path .. '/.nvim-file-history-root') == 1 then
+    if vim.fn.isdirectory(path .. '/.nvim-file-history') == 1 then
       return path
     end
     
@@ -154,9 +154,9 @@ local function update_project()
   if not project_root then
     -- Show helpful error message when no .nvim-breadcrumbs-root file is found
     vim.notify(
-      "File History: No .nvim-file-history-root file found.\n" ..
-      "Please create an empty .nvim-file-history-root file at your project root to enable file history tracking.\n" ..
-      "Example: touch /path/to/your/project/.nvim-file-history-root",
+      "File History: No .nvim-file-history/ directory found.\n" ..
+      "Please create a .nvim-file-history/ directory at your project root to enable file history tracking.\n" ..
+      "Example: mkdir /path/to/your/project/.nvim-file-history",
       vim.log.levels.WARN
     )
     return
@@ -164,7 +164,7 @@ local function update_project()
   
   if state.current_project ~= project_root then
     state.current_project = project_root
-    state.history_file_path = project_root .. '/' .. M.config.history_file
+    state.history_file_path = project_root .. '/.nvim-file-history/' .. M.config.history_file
     load_history()
   end
 end

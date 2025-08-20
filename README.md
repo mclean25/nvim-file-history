@@ -2,10 +2,13 @@
 
 A Neovim plugin that tracks file history per project and provides breadcrumb-style navigation through Telescope.
 
+What's unique about this plugin is it's project-scoped history. You place a `.nvim-file-history/` marker file 
+at the root of your project, and then it tracks all files you open in that project.
+
 ## ✨ Features
 
-- **Explicit project-scoped history**: Tracks file visits per project using a `.nvim-file-history-root` marker file
-- **Persistent across sessions**: History is saved to `.nvim-file-history` in your project root
+- **Explicit project-scoped history**: Tracks file visits per project using a `.nvim-file-history/` marker directory
+- **Persistent across sessions**: History is saved to `history.txt` inside `.nvim-file-history/` in your project root
 - **Telescope integration**: Beautiful UI for browsing history and breadcrumbs
 - **Smart filtering**: Excludes temp files, git directories, and special buffers
 - **Time-aware**: Shows when files were last visited
@@ -69,7 +72,7 @@ use {
 
 ### Initial Setup
 
-**Important**: You must create a `.nvim-file-history-root` file at your project root for the plugin to work:
+**Important**: You must create a `.nvim-file-history/` file at your project root for the plugin to work:
 
 This file tells the plugin where the root of your project is so that it knows the context of which history to 
 care about and which files to track.
@@ -79,7 +82,7 @@ care about and which files to track.
 cd /path/to/your/project
 
 # Create the marker file
-touch .nvim-file-history-root
+mkdir .nvim-file-history
 ```
 
 The plugin will show a warning if this file is not found and will not track history until you create it.
@@ -94,38 +97,13 @@ The plugin will show a warning if this file is not found and will not track hist
 
 ### How it works
 
-1. **Project setup**: Create a `.nvim-file-history-root` file at your project root
+1. **Project setup**: Create a `.nvim-file-history/` file at your project root
 2. **Automatic tracking**: Every time you open a file (`BufEnter`/`BufRead`), it's added to history
-3. **Project detection**: Looks for `.nvim-file-history-root` file to determine project root
+3. **Project detection**: Looks for `.nvim-file-history/` file to determine project root
 4. **Smart exclusions**: Filters out temporary files, node_modules, .git, oil:// paths, etc.
 5. **Persistent storage**: History saved to `.nvim-file-history` in project root
 
 ## ⚙️ Configuration
-
-### Default Configuration
-
-```lua
-{
-  max_history_size = 20,                     -- Maximum files to track per project
-  history_file = '.nvim-file-history',        -- Filename for history storage
-  exclude_patterns = {                       -- File patterns to ignore
-    '%.git/',
-    'node_modules/',
-    '%.cache/',
-    '/tmp/',
-    '^oil:/',                               -- Oil.nvim paths
-  },
-  exclude_filetypes = {                      -- Filetypes to ignore
-    'help',
-    'NvimTree',
-    'neo-tree',
-    'telescope',
-    'lazy',
-    'mason',
-    'oil',
-  }
-}
-```
 
 ### Custom Configuration Example
 
@@ -156,7 +134,7 @@ require('nvim-file-history').setup({
 4. **Cross-session continuity**: History persists between nvim sessions
 5. **Explicit project boundaries**: You control exactly where history is tracked by placing the marker file
 
-## 💡 Why `.nvim-file-history-root`?
+## 💡 Why `.nvim-file-history/`?
 
 This approach eliminates common issues with automatic project detection:
 
@@ -198,10 +176,6 @@ telescope_integration.file_history_picker(opts)
 - **File preview**: Full file preview in telescope
 - **Quick navigation**: Press Enter to open file
 - **Smart highlighting**: Different colors for file paths and timestamps
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📝 License
 
