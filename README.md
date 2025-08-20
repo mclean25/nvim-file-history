@@ -5,7 +5,7 @@ A Neovim plugin that tracks file history per project and provides breadcrumb-sty
 What's unique about this plugin is it's project-scoped history. You place a `.nvim-file-history/` marker file 
 at the root of your project, and then it tracks all files you open in that project.
 
-<img width="3024" height="1894" alt="CleanShot 2025-08-19 at 21 00 46@2x" src="https://github.com/user-attachments/assets/51016b35-e818-4e02-a9f0-20c08e322c5e" />
+<img width="3020" height="1890" alt="CleanShot 2025-08-19 at 21 11 32@2x" src="https://github.com/user-attachments/assets/b4d9214b-c63c-4c8e-a413-624d8e330908" />
 
 ## ✨ Features
 
