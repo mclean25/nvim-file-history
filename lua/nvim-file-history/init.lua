@@ -157,13 +157,7 @@ local function update_project()
   local project_root = get_project_root()
   
   if not project_root then
-    -- Show helpful error message when no .nvim-breadcrumbs-root file is found
-    vim.notify(
-      "File History: No .nvim-file-history/ directory found.\n" ..
-      "Please create a .nvim-file-history/ directory at your project root to enable file history tracking.\n" ..
-      "Example: mkdir /path/to/your/project/.nvim-file-history",
-      vim.log.levels.WARN
-    )
+    -- Silently return - warning will be shown when user tries to use the feature
     return
   end
   
